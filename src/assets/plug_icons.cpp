@@ -1,4 +1,4 @@
-#include "assets.h"
+#include "..\..\include\assets.h"
 
 unsigned char PLUG_ICON[][24*3] PROGMEM = {
     // BP_PRES_0

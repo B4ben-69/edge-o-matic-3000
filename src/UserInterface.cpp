@@ -1,8 +1,8 @@
-#include "UserInterface.h"
-#include "Icons.h"
-#include "WebSocketHelper.h"
+#include "..\include\UserInterface.h"
+#include "..\include\Icons.h"
+#include "..\include\WebSocketHelper.h"
 
-#include "Page.h"
+#include "..\include\Page.h"
 
 #define icon_y(idx) (SCREEN_WIDTH - (10 * (idx + 1)) + 2)
 

@@ -1,12 +1,12 @@
 #ifndef __p_RUN_GRAPH_h
 #define __p_RUN_GRAPH_h
 
-#include "Page.h"
-#include "UserInterface.h"
-#include "OrgasmControl.h"
-#include "Hardware.h"
-#include "assets.h"
-#include "WebSocketHelper.h"
+#include "..\..\include\Page.h"
+#include "..\..\include\UserInterface.h"
+#include "..\..\include\OrgasmControl.h"
+#include "..\..\include\Hardware.h"
+#include "..\..\include\assets.h"
+#include "..\..\include\WebSocketHelper.h"
 
 enum RGView {
   GraphView,

@@ -6,9 +6,9 @@
 
 #include <time.h>
 
-#include "eom-hal.hpp"
-#include "config.h"
-#include "VERSION.h"
+#include "..\lib\eom-hal\eom-hal.hpp"
+#include "..\include\config.h"
+#include "..\VERSION.h"
 
 #include "FS.h"
 #include "SD.h"
@@ -20,26 +20,29 @@
 #include <OneButton.h>
 #include <ESP32Encoder.h>
 
-#include "Hardware.h"
-#include "UserInterface.h"
-#include "BluetoothServer.h"
-#include "Page.h"
-#include "RunningAverage.h"
-#include "Console.h"
-#include "OrgasmControl.h"
-#include "WiFiHelper.h"
-#include "UpdateHelper.h"
-#include "WebSocketHelper.h"
-#include "WebSocketSecureHelper.h"
+#include "..\include\Hardware.h"
+#include "..\include\UserInterface.h"
+#include "..\include\BluetoothServer.h"
+#include "..\include\Page.h"
+#include "..\include\RunningAverage.h"
+#include "..\include\Console.h"
+#include "..\include\OrgasmControl.h"
+#include "..\include\WiFiHelper.h"
+#include "..\include\UpdateHelper.h"
+#include "..\include\WebSocketHelper.h"
+#include "..\include\WebSocketSecureHelper.h"
 
 uint8_t LED_Brightness = 13;
 
-// Declare LCD
-#ifdef NG_PLUS
-  Adafruit_SSD1306 display(128, 64);
-#else
-  Adafruit_SSD1306 display(128, 64, &SPI, OLED_DC, OLED_RESET, OLED_CS);
-#endif
+// Declare LCD                                    // Edge-o-matic-3000 
+// #ifdef NG_PLUS
+//   Adafruit_SSD1306 display(128, 64);
+// #else
+//   Adafruit_SSD1306 display(128, 64, &SPI, OLED_DC, OLED_RESET, OLED_CS);
+// #endif
+
+   Adafruit_SSD1306 display(128, 64, &Wire, -1);    // my test machine
+
 
 UserInterface UI(&display);
 
@@ -137,7 +140,7 @@ void setup() {
 #endif
   Serial.println("Version: " VERSION);
   Serial.print("EOM-HAL Version: ");
-  Serial.println(eom_hal_get_version());
+ // Serial.println(eom_hal_get_version());
 
   // Setup Hardware
   setupHardware();

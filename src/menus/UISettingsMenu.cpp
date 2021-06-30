@@ -1,6 +1,6 @@
-#include "UIMenu.h"
-#include "UIInput.h"
-#include "config.h"
+#include "..\..\include\UIMenu.h"
+#include "..\..\include\UIInput.h"
+#include "..\..\include\config.h"
 
 UIInput ScreenDim("Screen Dim (s)", [](UIMenu *ip) {
   UIInput *input = (UIInput*) ip;

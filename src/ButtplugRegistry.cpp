@@ -1,5 +1,5 @@
-#include "ButtplugRegistry.h"
-#include "UserInterface.h"
+#include "..\include\ButtplugRegistry.h"
+#include "..\include\UserInterface.h"
 
 #include <NimBLEDevice.h>
 #include <Arduino.h>

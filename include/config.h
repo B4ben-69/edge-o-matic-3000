@@ -21,7 +21,8 @@
 //#define NG_PLUS
 
 // Butt Pin
-#define BUTT_PIN        34
+//#define BUTT_PIN        34   // Edge-o-matic-3000 
+#define BUTT_PIN        36   // my test machine
 #define MOT_PWM_PIN     15
 
 // SD Connections
@@ -32,8 +33,10 @@
 #define ENCODER_A_PIN   33
 #define ENCODER_SW_PIN  35
 #define ENCODER_RD_PIN  2
-#define ENCODER_BL_PIN  27
-#define ENCODER_GR_PIN  4
+//#define ENCODER_BL_PIN  27   // Edge-o-matic-3000
+//#define ENCODER_GR_PIN  4    // Edge-o-matic-3000
+#define ENCODER_BL_PIN  4    // my test machine
+#define ENCODER_GR_PIN  27   // my test machine
 
 #ifdef NG_PLUS
   // LCD Definitions
@@ -67,9 +70,12 @@
   #define I2C_SLAVE_ADDR 0x09
 
   // Buttons
-  #define KEY_1_PIN       39
-  #define KEY_2_PIN       25
-  #define KEY_3_PIN       26
+//  #define KEY_1_PIN       39   // Edge-o-matic-3000
+//  #define KEY_2_PIN       25   // Edge-o-matic-3000
+//  #define KEY_3_PIN       26   // Edge-o-matic-3000
+  #define KEY_1_PIN       26   // my test machine
+  #define KEY_2_PIN       25   // my test machine
+  #define KEY_3_PIN       39   // my test machine
 #endif
 
 union ConfigValue {

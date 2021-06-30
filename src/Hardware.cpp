@@ -1,6 +1,6 @@
-#include "Hardware.h"
-#include "OrgasmControl.h"
-#include "ButtplugRegistry.h"
+#include "..\include\Hardware.h"
+#include "..\include\OrgasmControl.h"
+#include "..\include\ButtplugRegistry.h"
 
 #include <WireSlave.h>
 #include <EEPROM.h>
