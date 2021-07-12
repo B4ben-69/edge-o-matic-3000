@@ -121,8 +121,8 @@ struct ConfigStruct {
   VibrationMode vibration_mode;
   
   // clench stuff
-  int clench_pressure_sensitivity = 200;
-  int clench_duration_threshold = 35;
+  int clench_pressure_sensitivity;
+  int clench_duration_threshold;
 
   int autoEdgingDurationMinutes;
   int postOrgasmDurationMinutes;
