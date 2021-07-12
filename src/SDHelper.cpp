@@ -1,4 +1,4 @@
-#include "SDHelper.h"
+#include "..\include\SDHelper.h"
 
 namespace SDHelper {
   // FIXME: Apparently this fails to link. I think it's something weird with my setup.

@@ -1,7 +1,7 @@
-#include "OrgasmControl.h"
-#include "Hardware.h"
-#include "WiFiHelper.h"
-#include "config.h"
+#include "..\include\OrgasmControl.h"
+#include "..\include\Hardware.h"
+#include "..\include\WiFiHelper.h"
+#include "..\include\config.h"
 
 namespace OrgasmControl {
   namespace {
@@ -54,6 +54,7 @@ namespace OrgasmControl {
       }
       if (p_check >= clench_pressure_threshold) {
         clench_duration += 1;   // Start counting clench time if pressure over threshold
+
         if ( clench_duration > Config.clench_duration_threshold) {
           arousal += 100;     // boost arousal  because clench duration exceeded
           if ( arousal > 4095 ) { arousal = 4096; } // protect arousal value to not go higher then 4096
@@ -71,6 +72,7 @@ namespace OrgasmControl {
           }
         }
       } // end of clenching detection
+
     }
 
     void updateMotorSpeed() {

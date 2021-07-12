@@ -1,5 +1,6 @@
-#include "VibrationModeController.h"
-#include "config.h"
+#include "..\include\VibrationModeController.h"
+#include "..\include\config.h"
+
 float VibrationModeController::rampToIncrement(int start, int target, float time_s) {
   if (time_s == 0) {
     return target;
