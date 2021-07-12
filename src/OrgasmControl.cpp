@@ -118,23 +118,32 @@ namespace OrgasmControl {
       if (!control_motor) {
         autoEdgingStartMillis = millis();
         postOrgasmStartMillis = 0;
+        if (Config.sensitivity_threshold == 6000) { // set back the sensitivity_threshold if switched to manual mode before the end of the post orgasm cycle
+          Config.sensitivity_threshold = original_sensitivity_threshold;
+        }
         return;
       }
       VibrationModeController *controller = getVibrationMode();
 
-      if (autoEdgingDurationMinutes > 0 ) {   // Do the edging timer if not turned off
-        if ( millis() > (autoEdgingStartMillis + ( autoEdgingDurationMinutes * 60 * 1000 )) && postOrgasmStartMillis == 0) {  // Detect if edging time has passed
-          if (Config.sensitivity_threshold != 6000) original_sensitivity_threshold = Config.sensitivity_threshold;
+      if (Config.autoEdgingDurationMinutes > 0 ) {   // Do the edging timer if not turned off
+        if ( millis() > (autoEdgingStartMillis + ( Config.autoEdgingDurationMinutes * 60 * 1000 )) && postOrgasmStartMillis == 0) {  // Detect if edging time has passed
+          Hardware::setEncoderColor(CRGB::Green);
+          if (Config.sensitivity_threshold != 6000) {
+            original_sensitivity_threshold = Config.sensitivity_threshold; // Make backup to bring back value after Post orgasm Torture
+            arousal = 0;                         //make sure arousal is lower then threshold bofore starting to detect an orgasm
+          }
           Config.sensitivity_threshold = 6000; // make sure orgasm is now possible
           if (arousal > original_sensitivity_threshold) { //now detect the orgasm to start post orgasm torture timer
+            Hardware::setEncoderColor(CRGB::Red);
             postOrgasmStartMillis = millis();   // Start Post orgasm torture timer
           }
         } 
 
-        if ( millis() < (postOrgasmStartMillis + (postOrgasmDurationMinutes * 60 * 1000 )) && postOrgasmStartMillis >0) { // Detect if within post orgasm session
+        if ( millis() < (postOrgasmStartMillis + (Config.postOrgasmDurationMinutes * 60 * 1000 )) && postOrgasmStartMillis >0) { // Detect if within post orgasm session
           motor_speed = Config.motor_max_speed;
         }
-        if ( millis() >= (postOrgasmStartMillis + (postOrgasmDurationMinutes * 60 * 1000 )) && postOrgasmStartMillis >0) { // torture until timer reached
+        if ( millis() >= (postOrgasmStartMillis + (Config.postOrgasmDurationMinutes * 60 * 1000 )) && postOrgasmStartMillis >0) { // torture until timer reached
+          Hardware::setEncoderColor(CRGB::Green);
           Config.sensitivity_threshold = original_sensitivity_threshold;
           motor_speed = controller->stop();  // Turn off motor
           Hardware::setMotorSpeed(motor_speed);
@@ -144,7 +153,7 @@ namespace OrgasmControl {
       }
  
     }
-    
+
   }
 
   void twitchDetect(){
