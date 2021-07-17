@@ -10,7 +10,8 @@ cmake-build-release/
 build/
 
 serials.yml
-VERSION.h
+
+.gitignore
 .project
 .vscode/
 .pio
