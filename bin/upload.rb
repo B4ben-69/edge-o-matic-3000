@@ -14,12 +14,11 @@ require 'yaml'
 
 opts = Optimist::options do
   banner <<-TEXT
-Compile and upload this code to the ESP.
+Compile and upload this code to the ESP, using the Arduino environment for now.
 TEXT
 
   opt :port, "Serial port to upload to", type: :string, default: 'auto'
-  opt :pio, "Use the PlatformIO build chain", type: :bool, default: true
-  opt :ino_file, "Path to main .ino", type: :string, default: File.join(ROOT_PATH, "src/main.cpp")
+  opt :ino_file, "Path to main .ino", type: :string, default: File.join(ROOT_PATH, "nogasm-wifi.ino")
   opt :compile, "Recompile the software before upload", type: :bool, default: false
   opt :upload, "Upload to the device", type: :bool, default: false
   opt :get_version, "Show software version and exit", type: :bool, default: false
@@ -90,13 +89,9 @@ else
 end
 
 if opts[:compile]
-  if opts[:pio]
-    puts `pio run`
-  else
-    ino_file = opts[:ino_file]
-    builder = Arduino::Builder.new(ino_file)
-    builder.compile
-  end
+  ino_file = opts[:ino_file]
+  builder = Arduino::Builder.new(ino_file)
+  builder.compile
 end
 
 if opts[:tag]
@@ -122,11 +117,7 @@ if opts[:port] && (opts[:upload] || opts[:serial] || opts[:console] || opts[:ser
 end
 
 if opts[:upload]
-  if opts[:pio]
-    puts `pio run -t upload`
-  else
-    esptool&.write_flash
-  end
+  esptool&.write_flash
 end
 
 if opts[:serial]
