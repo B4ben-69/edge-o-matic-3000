@@ -21,4 +21,3 @@ serials.yml
 .vscode/ipch
 vendor/
 tmp/
-*.code-workspace

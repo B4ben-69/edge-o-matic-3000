@@ -6,9 +6,7 @@
 
 #include <time.h>
 
-#include "EEPROM.h"
-
-#include "eom-hal.hpp"
+#include "..\lib\eom-hal\eom-hal.hpp"
 #include "config.h"
 #include "VERSION.h"
 
@@ -45,9 +43,6 @@ uint8_t LED_Brightness = 13;
 
    Adafruit_SSD1306 display(128, 64, &Wire, -1);    // my test machine
 
-// Declare LCD
-  //Adafruit_SSD1306 display = eom_hal_get_display();
-#endif
 
 UserInterface UI(&display);
 
@@ -137,7 +132,6 @@ void setup() {
   // Start Serial port
   Serial.begin(115200);
   Serial.println("Heap: " + String(hps));
-  eom_hal_init();
 
 #ifdef NG_PLUS
   Serial.println("Maus-Tec presents: NoGasm Plus");
@@ -161,10 +155,14 @@ void setup() {
   UI.drawWifiIcon(1);
   UI.render();
 
+  Serial.println("Heap before WiFi: " + String(xPortGetFreeHeapSize()));
+
   // Initialize WiFi
   if (Config.wifi_on) {
     WiFiHelper::begin();
   }
+
+  Serial.println("Heap before Bluetooth: " + String(xPortGetFreeHeapSize()));
 
   // Initialize Bluetooth
   if (Config.bt_on) {
@@ -174,6 +172,8 @@ void setup() {
     BT.advertise();
   }
 
+
+  Serial.println("Heap after Bluetooth: " + String(xPortGetFreeHeapSize()));
 
   // Start background worker:
   xTaskCreatePinnedToCore(
@@ -204,6 +204,8 @@ void setup() {
 
   Page::Go(&RunGraphPage);
   Serial.println("READY");
+
+  Serial.println("Final Startup Heap: " + String(xPortGetFreeHeapSize()));
 }
 
 void loop() {
