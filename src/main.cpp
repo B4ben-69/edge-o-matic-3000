@@ -1,12 +1,10 @@
 #include <WiFi.h>
-
-// Now included as a cli flag.
-// #define ARDUINOJSON_USE_LONG_LONG 1
 #include <ArduinoJson.h>
-
 #include <time.h>
 
-#include "..\lib\eom-hal\eom-hal.hpp"
+#include "EEPROM.h"
+
+#include "eom-hal.h"
 #include "config.h"
 #include "VERSION.h"
 
@@ -17,7 +15,6 @@
 #include <FastLED.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <OneButton.h>
 #include <ESP32Encoder.h>
 
 #include "Hardware.h"
@@ -34,43 +31,15 @@
 
 uint8_t LED_Brightness = 13;
 
-// Declare LCD                                    // Edge-o-matic-3000 
-// #ifdef NG_PLUS
-//   Adafruit_SSD1306 display(128, 64);
-// #else
-//   Adafruit_SSD1306 display(128, 64, &SPI, OLED_DC, OLED_RESET, OLED_CS);
-// #endif
-
-   Adafruit_SSD1306 display(128, 64, &Wire, -1);    // my test machine
-
+// Declare LCD
+#ifdef NG_PLUS
+  Adafruit_SSD1306 display(128, 64);
+#else
+  Adafruit_SSD1306 display(128, 64, &SPI, OLED_DC, OLED_RESET, OLED_CS);
+  //Adafruit_SSD1306 display = eom_hal_get_display();
+#endif
 
 UserInterface UI(&display);
-
-// Globals
-
-void printDirectory(File dir, int numTabs) {
-  while (true) {
-
-    File entry =  dir.openNextFile();
-    if (! entry) {
-      // no more files
-      break;
-    }
-    for (uint8_t i = 0; i < numTabs; i++) {
-      Serial.print('\t');
-    }
-    Serial.print(entry.name());
-    if (entry.isDirectory()) {
-      Serial.println("/");
-      printDirectory(entry, numTabs + 1);
-    } else {
-      // files have sizes, directories do not
-      Serial.print("\t\t");
-      Serial.println(entry.size(), DEC);
-    }
-    entry.close();
-  }
-}
 
 void resetSD() {
   // SD
@@ -104,7 +73,6 @@ void resetSD() {
 }
 
 void setupHardware() {
-  pinMode(BUTT_PIN, INPUT);
   pinMode(MOT_PWM_PIN, OUTPUT);
 
   if(!Hardware::initialize()) {
@@ -128,10 +96,9 @@ void backgroundLoop(void*) {
 }
 
 void setup() {
-  auto hps = xPortGetFreeHeapSize();
   // Start Serial port
   Serial.begin(115200);
-  Serial.println("Heap: " + String(hps));
+  eom_hal_init();
 
 #ifdef NG_PLUS
   Serial.println("Maus-Tec presents: NoGasm Plus");
@@ -155,14 +122,10 @@ void setup() {
   UI.drawWifiIcon(1);
   UI.render();
 
-  Serial.println("Heap before WiFi: " + String(xPortGetFreeHeapSize()));
-
   // Initialize WiFi
   if (Config.wifi_on) {
     WiFiHelper::begin();
   }
-
-  Serial.println("Heap before Bluetooth: " + String(xPortGetFreeHeapSize()));
 
   // Initialize Bluetooth
   if (Config.bt_on) {
@@ -172,8 +135,6 @@ void setup() {
     BT.advertise();
   }
 
-
-  Serial.println("Heap after Bluetooth: " + String(xPortGetFreeHeapSize()));
 
   // Start background worker:
   xTaskCreatePinnedToCore(
@@ -186,29 +147,21 @@ void setup() {
       0);        /* pin task to core 0 */
 
   // I'm always one for the dramatics:
-  // Hold Key1 for fast boot, used in testing.
-#ifdef KEY_1_PIN
-  if (digitalRead(KEY_1_PIN) == HIGH) {
-#else
-  if (true) {
-#endif
-    delay(500);
-    Hardware::setEncoderColor(CRGB::Green);
-    delay(500);
-    Hardware::setEncoderColor(CRGB::Blue);
-    delay(500);
-    Hardware::setEncoderColor(CRGB::White);
-    delay(500);
-    UI.fadeTo();
-  }
+  delay(500);
+  Hardware::setEncoderColor(CRGB::Green);
+  delay(500);
+  Hardware::setEncoderColor(CRGB::Blue);
+  delay(500);
+  Hardware::setEncoderColor(CRGB::White);
+  delay(500);
+  UI.fadeTo();
 
   Page::Go(&RunGraphPage);
   Serial.println("READY");
-
-  Serial.println("Final Startup Heap: " + String(xPortGetFreeHeapSize()));
 }
 
 void loop() {
+  eom_hal_tick();
   Console::loop(); // <- TODO rename to tick
   Hardware::tick();
   OrgasmControl::tick();
