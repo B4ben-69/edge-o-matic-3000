@@ -63,6 +63,7 @@ and is automatically generated. Here is a quick summary of config variables:
 |`milk_o_matic_rest_duration_seconds`|Int|60|How long to rest before restarting an other round of Denial_count edging.|
 |`random_orgasm_triggers`|Boolean|false|Randomize Edge timer and Denial count to minimum of 1/2 of their values.|
 |`to_orgasm_mode`|OrgasmMode|Timer|Timer, Denial_count and Milk-O-Matic. Random is a choice between Timer and Denial_count. See documentation for more details.|
+|`use_denial_count_in_sensitivity`|Boolean|false|Use denial count to increase sensitivity to edging. Reduces to risk of Oups over time.|
 
 
 \* AzureFang refers to a common wireless technology that is blue and involves chewing face-rocks. However, the

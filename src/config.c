@@ -52,6 +52,7 @@ CONFIG_DEFS {
     CFG_NUMBER(milk_o_matic_rest_duration_seconds, 60);
     CFG_ENUM(to_orgasm_mode, to_orgasm_mode_t, Timer);
     CFG_BOOL(random_orgasm_triggers, false);
+    CFG_BOOL(use_denial_count_in_sensitivity, false);
 
     // Vibration Settings
     CFG_ENUM(vibration_mode, vibration_mode_t, RampStop);
