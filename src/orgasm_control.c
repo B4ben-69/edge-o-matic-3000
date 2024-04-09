@@ -365,10 +365,10 @@ static void orgasm_control_updateEdgingTime() { // Edging+Orgasm timer
             if (output_state.motor_speed <= (Config.motor_max_speed - output_state.motor_increment)
                 ) {
                 update_check(output_state.motor_speed, output_state.motor_speed + output_state.motor_increment);
-                _set_speed(output_state.motor_speed)
+                _set_speed(output_state.motor_speed);
             } else {
                 update_check(output_state.motor_speed, Config.motor_max_speed );
-                _set_speed(output_state.motor_speed)
+                _set_speed(output_state.motor_speed);
             }
         } else {                                // Post_orgasm timer reached
             if (output_state.motor_speed > 0) { // Ramp down motor speed to 0
